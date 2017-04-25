@@ -9,9 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 const userPool = [];
 
-// ee.on('default', (client, string) => {
-//   client.socket.write(`You entered an invalid command: ${string.split(' ', 1)}. Please try again.\n}`);
-// });
+ee.on('default', (client, string) => {
+  client.socket.write(`You entered an invalid command: ${string.split(' ', 1)}. Please try again.\n}`);
+});
 
 ee.on('/all', (client, string) => {
   userPool.forEach(user => user.socket.write(`${client.nickName}: ${string}`));
@@ -40,7 +40,6 @@ server.on('connection', socket => {
     }
     
     if(command === '/nick') {
-      // console.log('in nick socket function');
       ee.emit('/nick', client, data.toString().split(' ').slice(1).join(' '));
       return;
     }
@@ -50,6 +49,6 @@ server.on('connection', socket => {
       return;
     }
     
-    // ee.emit('default', client, data.toString());
+    ee.emit('default', client, data.toString());
   });
 });
