@@ -1,0 +1,22 @@
+{
+  "name": "lab-allie",
+  "version": "1.0.0",
+  "description": "Lab 6 to create a TCP chat",
+  "main": "server.js",
+  "dependencies": {
+    "node-uuid": "^1.4.8",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "tcp",
+    "chat",
+    "mocha"
+  ],
+  "author": "Allie Grampa",
+  "license": "MIT"
+}

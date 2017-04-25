@@ -18,6 +18,7 @@ ee.on('/all', (client, string) => {
 });
 
 ee.on('/nick', (client, string) => {
+
   let nickname = `${string}`.trim();
   client.nickName = nickname;
 });
@@ -58,12 +59,15 @@ server.on('connection', socket => {
     }
     
     if(command === '/dm') {
+
       ee.emit('/dm', client, data.toString().split(' ').slice(1).join(' '));
+
       return;
     }
     
     ee.emit('default', client, data.toString());
   });
+
     
   socket.on('close', () =>
     ee.removeListener('close', function(client){
@@ -79,3 +83,4 @@ server.on('connection', socket => {
 
 
 // ee.on('error') uncaught exception
+
