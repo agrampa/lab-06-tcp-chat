@@ -18,11 +18,25 @@ ee.on('/all', (client, string) => {
 });
 
 ee.on('/nick', (client, string) => {
-  let nickname = `${string}`;
+
+  let nickname = `${string}`.trim();
   client.nickName = nickname;
 });
 
-// ee.on('/dm')
+ee.on('/dm', (client, string) => {
+  console.log('string', string);
+  let directUser = string.split(' ')[0];
+  console.log('direct user', directUser);
+  let message = string.split(' ').slice(1).join(' ').trim();
+  console.log('message', message);
+  for(var i = 0; i < userPool.length; i++) {
+    console.log('userPool', userPool[i].nickName);
+    if(userPool[i].nickName === directUser) {
+      userPool[i].socket.write(`${message}`);
+    }
+  }
+  console.log('direct user', directUser);
+});
 
 server.listen(PORT, () => console.log(`Listening on: ${PORT}`));
 
@@ -45,10 +59,28 @@ server.on('connection', socket => {
     }
     
     if(command === '/dm') {
-      
+
+      ee.emit('/dm', client, data.toString().split(' ').slice(1).join(' '));
+
       return;
     }
     
     ee.emit('default', client, data.toString());
   });
+
+    
+  socket.on('close', () =>
+    ee.removeListener('close', function(client){
+      // console.log(userPool);
+      userPool.splice(userPool.indexOf(client), 1);
+      // console.log(userPool);
+    })
+  );
+  
+  socket.on('uncaughtException', (error) => console.error('Oops! An error occurred', error));
+  
 });
+
+
+// ee.on('error') uncaught exception
+
